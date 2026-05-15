@@ -1,0 +1,15 @@
+@startuml
+skinparam componentStyle uml2
+
+component "<<Spring Boot>>\nBusiness Service" as provider
+component "REST Consumer" as consumer
+component "<<Spring Boot>>\nMCP-Adapter" as mcp_adapter #lightgreen
+component "Agent" as agent #lightgreen
+
+provider -up- REST
+consumer -down-( REST
+
+mcp_adapter -down-( REST
+mcp_adapter -up- MCP
+agent -right-( MCP
+@enduml

@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: ai-mcp-server
+
+  ai:
+    mcp:
+      server:
+        name: ai-mcp-server
+        version: 1.0.0-SNAPSHOT
+        type: SYNC
+        protocol: STREAMABLE
+        request-timeout: 30s
+
+server:
+  port: 8080

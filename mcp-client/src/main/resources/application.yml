@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: ai-mcp-client
+  main:
+    web-application-type: none
+  ai:
+    mcp:
+      client:
+        enabled: true
+        type: SYNC
+        request-timeout: 30s
+        streamable-http:
+          connections:
+            demo:
+              url: http://localhost:8080
+              endpoint: /mcp

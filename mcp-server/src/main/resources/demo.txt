@@ -1,0 +1,50 @@
+The Model Context Protocol (MCP) is an open standard developed by Anthropic that defines
+how AI models communicate with external tools, services, and data sources. It establishes
+a uniform interface between a host application (the MCP client) and capability providers
+(MCP servers), replacing ad-hoc integrations with a single, well-defined protocol.
+
+An MCP server exposes three types of primitives:
+
+  Tools       – callable functions that perform actions or computations, such as querying
+                a database, calling a REST API, or running a shell command. Tools accept
+                structured parameters and return structured results.
+
+  Resources   – addressable, read-only content identified by a URI. A resource can be a
+                file, a database record, a live sensor reading, or any other data the
+                server wants to make available to the client.
+
+  Prompts     – reusable prompt templates with named parameters. The server defines the
+                structure; the client fills in the variables and forwards the rendered
+                prompt to the model.
+
+Transport layer
+
+MCP is transport-agnostic. The two most common transports are:
+
+  Streamable HTTP  A single HTTP endpoint accepts POST requests carrying JSON-RPC 2.0
+                   messages. The server returns an Mcp-Session-Id header on the initial
+                   initialize call; subsequent requests must include this header. Responses
+                   can be plain JSON or Server-Sent Events for streaming.
+
+  stdio            The server reads JSON-RPC from stdin and writes responses to stdout,
+                   making it easy to embed in local toolchains without a network stack.
+
+Session lifecycle
+
+  1. The client sends an initialize request with its capabilities and protocol version.
+  2. The server responds with its own capabilities and a session identifier.
+  3. The client confirms readiness with an initialized notification.
+  4. Normal operation begins: tools/list, tools/call, resources/list, resources/read, etc.
+  5. Either side may terminate the session at any time.
+
+Spring AI integration
+
+Spring AI 2.0 provides first-class MCP support on both sides of the protocol:
+
+  Server  Annotate any Spring bean method with @McpTool or @McpResource and Spring AI
+          registers it automatically at startup via component scanning. No manual
+          registration or schema authoring is required.
+
+  Client  The spring-ai-starter-mcp-client auto-configures McpSyncClient beans for each
+          connection declared in application.yml. Clients are qualified by their
+          connection name and can be injected directly with @Qualifier.
