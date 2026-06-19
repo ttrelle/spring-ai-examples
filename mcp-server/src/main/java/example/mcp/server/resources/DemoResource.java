@@ -5,6 +5,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -25,7 +26,7 @@ public class DemoResource {
             return new ClassPathResource("demo.txt")
                     .getContentAsString(StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read resource/dummy.txt", e);
+            throw new UncheckedIOException("Failed to read classpath resource demo.txt", e);
         }
     }
 }
