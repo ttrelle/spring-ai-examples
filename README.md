@@ -1,17 +1,19 @@
 # Building MCP servers with Spring AI
 
-A multi-module Maven project demonstrating how to build and consume an [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server using Spring Boot 4 and Spring AI 2.0.0-M5.
+A multi-module Maven project demonstrating how to build and consume an [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server using Spring Boot 4.0.6 and Spring AI 2.0.0-RC2 (Java 21).
 
 ## Modules
 
 | Module | Description |
 |---|---|
-| `mcp-server` | Spring Boot app exposing MCP tools via Streamable HTTP on port 8080 |
-| `mcp-client` | Spring Boot app with an interactive REPL that calls the server's tools |
+| `mcp-server` | Spring Boot app exposing MCP tools and resources via Streamable HTTP on port 8080 |
+| `mcp-client` | Headless Spring Boot app with an interactive REPL that calls the server's tools |
+| `mcp-server-jira` | Stub module — only a `pom.xml`, no source yet |
 
 ## Running
 
-Start the server first, then the client in a separate terminal:
+Start the server first, then the client in a separate terminal.
+Homebrew's `mvn` uses Java 25, so export a Java 21 `JAVA_HOME` first:
 
 ```bash
 export JAVA_HOME=/Users/trelle/Library/Java/JavaVirtualMachines/openjdk-26/Contents/Home
@@ -26,15 +28,16 @@ mvn spring-boot:run -pl mcp-client
 The client drops into an interactive shell:
 
 ```
-mcp> list-tools
-mcp> now Europe/Berlin
-mcp> days-until 2026-12-31
-mcp> exit
+mcp-client> list-tools
+mcp-client> list-resources
+mcp-client> create-policy-number MOTOR
+mcp-client> help
+mcp-client> exit
 ```
 
 ## Adding a new MCP tool
 
-Add a method to `DateTimeTools` (or any `@Component` in `org.example.mcp.server`) and annotate it:
+Add a method to `PolicyNumberTools` (or any `@Component` in `example.mcp.server`) and annotate it:
 
 ```java
 @McpTool(description = "What this tool does")
@@ -44,7 +47,18 @@ public String myTool(
 }
 ```
 
-Spring AI registers it automatically at startup — no further configuration needed.
+Spring AI generates the JSON schema and registers the tool automatically at startup — no further configuration needed.
+
+## Adding a new MCP resource
+
+Annotate a method in a `@Component` (see `resources.DemoResource`) with:
+
+```java
+@McpResource(uri = "...", name = "...", description = "...")
+public String myResource() {
+    ...
+}
+```
 
 ## Generic MCP Clients
 
