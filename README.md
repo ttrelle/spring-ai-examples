@@ -1,6 +1,6 @@
 # Building MCP servers with Spring AI
 
-A multi-module Maven project demonstrating how to build and consume an [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server using Spring Boot 4.0.6 and Spring AI 2.0.0-RC2 (Java 21).
+A multi-module Maven project demonstrating how to build and consume an [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server using Spring Boot 4.1.0 and Spring AI 2.0.0 (Java 21).
 
 ## Modules
 

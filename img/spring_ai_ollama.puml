@@ -1,0 +1,16 @@
+@startuml
+skinparam componentStyle uml2
+
+component "<<Spring Boot>>\nOllama Client" as client #lightgreen
+interface OpenAPI as api
+component Ollama as ollama
+
+component "<<Model>>\nqwen3.6" as m1 #white
+component "<<Model>>\n..." as m2 #white
+
+client -right-( api
+api -right- ollama
+m1 -[hidden]> m2
+ollama --> m1: manages
+ollama --> m2
+@enduml

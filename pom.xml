@@ -20,6 +20,7 @@
         <module>mcp-server</module>
         <module>mcp-server-jira</module>
         <module>mcp-client</module>
+        <module>ollama-client</module>
     </modules>
 
     <properties>

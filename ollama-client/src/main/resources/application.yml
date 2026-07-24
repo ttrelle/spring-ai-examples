@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: ollama-client
+  ai:
+    ollama:
+      init:
+        pull-model-strategy: never
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: qwen3.6
+
+logging:
+  level:
+    io.netty.resolver.dns: 'off'
